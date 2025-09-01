@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+ <meta charset="UTF-8" />
+ <title>For Nisha ❤ </title>
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <style>
+ :root{--black:#000; --red:#d80b2f; --pink:#ffc7d1; --purple:#5a0e34; --cream:#f4e1d2; --dark:#222; --white:#fff;
+ }
+ *{box-sizing:border-box}
+ html,body{margin:0;height:100%}
+ body{
+ display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;
+ font-family:system-ui,-apple-system,Segoe UI,Roboto,Poppins,sans-serif; color:#fff; transition:background .7s
+ ease;
+ background:var(--black); overflow:hidden;
+ }
+ .wrap{max-width:900px;width:100%;padding:24px}
+ .hidden{display:none}
+ .message{font-size:24px;line-height:1.6;margin:16px auto}
+ .title{font-weight:800;font-size:32px;margin-bottom:12px}
+ .subtext{font-size:18px;opacity:.95;margin-bottom:14px}
+ .shayari{font-size:26px;line-height:1.8}
+ button{
+ padding:12px 24px;font-size:18px;border:none;border-radius:10px;cursor:pointer;background:#fff;color:#111;
+ transition:transform .2s ease; margin:10px 8px 0
+ }
+ button:hover{transform:scale(1.05)}
+ /* background particles */
+ .particle{position:fixed;bottom:-40px;pointer-events:none;animation:floatUp linear forwards;z-index:0}
+ @keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:.9}100%{transform:translateY(-110vh)
+ scale(1.4);opacity:0}}
+ section{position:relative;z-index:1}
+ /* floating pictures */
+ .float-pic {
+ position: fixed;
+ width: 60px;
+ height: 60px;
+ pointer-events: none;
+ animation: floatPic linear forwards;
+ z-index: 0;
+ }
+ @keyframes floatPic {
+ 0% { transform: translate(0,0) rotate(0deg); opacity: 0.9; }
+ 100% { transform: translate(var(--moveX), var(--moveY)) rotate(360deg); opacity: 0; }
+ }
+ </style>
+ </head>
+ <body id="screen">
+ <!-- Background music -->
+ <audio id="background-audio" src="background_music.mp3" autoplay loop></audio>
+<div class="wrap">
+ <!-- Page 1 -->
+ <section id="page1">
+ <div id="msg1" class="message hidden">
+ I am sorry Nisha darling.<br/>
+ If you want to feel special please click on the below button.
+ </div>
+ <button id="next1" class="hidden">Next ➝</button>
+ </section>
+ <!-- Page 2 -->
+ <section id="page2" class="hidden">
+ <div class="message">How much I love you, you wanna know? </div>
+ <button id="next2">Click Here</button>
+ </section>
+ <!-- Page 3 -->
+ <section id="page3" class="hidden">
+ <div class="message" style="color:#111">
+ Nisha I love you more than words can ever explain. With you every moment feels like magic.
+ i know i do mistakes, i dont give efforts, i want to but somehow somewhere, vuli alxu, sorry.
+ i know you will forgive me my janeman. Thank you in advance.
+ <br/><br/>To know more click next button on the screen.
+ </div>
+ <button id="next3">Next ➝</button>
+ </section>
+ <!-- Page 4 -->
+ <section id="page4" class="hidden">
+ <div class="message">
+ Every heartbeat of mine says your name, Nisha <br/>
+ I miss you more than you ever think. Ş
+ </div>
+ <button id="next4">Click for More Surprise</button>
+ </section>
+ <!-- Page 5 (Shayari Page) -->
+ <section id="page5" class="hidden">
+ <div class="message" style="color:#111;">
+ <div class="title">Shayari Page</div>
+ <div class="subtext" style="color:#333;">
+ This shayari I found on internet — don't think that I wrote this because I am not a shayari guy.
+ This is to make you feel special, and this shayari speaks what my heart wants to say to you.
+ </div>
+ <div class="shayari" style="color:#111;font-weight:600;">
+ लोग मुझे पूछते है, तुमने उसमें ा देखा,<br/>
+ मने कहा जब उसे देखा,<br/>
+ उसके बाद कुछ नही देखा !!.
+ </div>
+ </div>
+ <button id="next5">Next ➝</button>
+ </section>
+ <!-- Page 6 -->
+ <section id="page6" class="hidden">
+ <div class="message">
+I can't edit pictures, I can't make reels like others<br/>
+ to make you feel special 
+<br/>
+ But I have better options to make you more mine ❤ ✨<br/><br/>
+ I love you more than you ever think.<br/>
+ I hope this makes you the happiest person alive in the world 
+</div>
+ <div>
+ <button id="happyBtn">Happy 
+</button>
+ <button id="notHappyBtn">Not Happy 
+</div>
+ </section>
+ <!-- Page 7 -->
+ </button>
+ <section id="page7" class="hidden">
+ <div class="message" style="color:#111;">
+ <strong>congratulations Nisha 
+</strong><br/><br/>
+ I thought you will choose this so we have a 100% match to become future husband and wife.
+ <br/><br/>
+ Thank you... I love you forever . you deserve more and more and i am learning to give you everything you
+ deserve.
+ <br/>This is just a small token of love from my side
+ <br/><br/>
+ Yours, Anurag.
+ <br/><br/>
+ Please wake me up at 11:00 am. I lob loba you.
+ <br/>I am imagining in my dreams that you forgive me and you also love me more and more.
+ <br/>Thank you in advance.
+ </div>
+ </section>
+ </div>
+ <script>
+ let sorryInterval = null;
+ let heartInterval = null;
+ let picInterval = null;
+ startSorry();
+ setTimeout(() => {
+ document.getElementById('msg1').classList.remove('hidden');
+ document.getElementById('next1').classList.remove('hidden');
+ }, 5000);
+ document.getElementById('next1').onclick = () => {
+ stopSorry();
+ setBackground('--red'); showPage(2); startHearts(); startPictures();
+ };
+ document.getElementById('next2').onclick = () => {
+ setBackground('--pink'); showPage(3); startHearts(); startPictures();
+ };
+ document.getElementById('next3').onclick = () => {
+ setBackground('--purple'); showPage(4); startHearts(); startPictures();
+ };
+ document.getElementById('next4').onclick = () => {
+ setBackground('--cream'); showPage(5); startHearts(); startPictures();
+ };
+ document.getElementById('next5').onclick = () => {
+setBackground('--dark'); showPage(6); startHearts(); stopPictures();
+ };
+ document.getElementById('happyBtn').onclick = () => {
+ setBackground('--pink'); showPage(7); startHearts(); stopPictures();
+ };
+ document.getElementById('notHappyBtn').onclick = () => {
+ setBackground('--pink'); showPage(7); startHearts(); stopPictures();
+ };
+ function showPage(n){
+ for(let i=1;i<=7;i++){
+ const el=document.getElementById('page'+i);
+ if(el) el.classList.add('hidden');
+ }
+ document.getElementById('page'+n).classList.remove('hidden');
+ const lightBg = (n===3 || n===5 || n===7);
+ document.body.style.color = lightBg ? '#111' : '#fff';
+ }
+ function setBackground(varName){
+ document.getElementById('screen').style.background =
+ getComputedStyle(document.documentElement).getPropertyValue(varName);
+ }
+ function startSorry(){
+ stopHearts(); stopPictures();
+ if(sorryInterval) return;
+ sorryInterval = setInterval(()=>spawnParticle('SORRY', 'rgba(255,255,255,0.8)'), 350);
+ }
+ function stopSorry(){
+ if(sorryInterval){ clearInterval(sorryInterval); sorryInterval=null; }
+ document.querySelectorAll('.particle').forEach(p=>{ if(p.dataset.kind==='sorry') p.remove(); });
+ }
+ // Hearts
+ function startHearts(){
+ if(heartInterval) return;
+ heartInterval = setInterval(()=>spawnParticle('❤ ', ''), 200);
+ }
+ function stopHearts(){
+ if(heartInterval){ clearInterval(heartInterval); heartInterval=null; }
+ document.querySelectorAll('.particle').forEach(p=>{ if(p.dataset.kind==='heart') p.remove(); });
+ }
+ // Floating pictures (Page2 - Page5 only)
+ function startPictures(){
+ if(picInterval) return;
+ const pics = ["pic1.png","pic2.png","pic3.png","pic4.png","pic5.png"];
+ picInterval = setInterval(()=>{
+ const img = document.createElement('img');
+ img.src = pics[Math.floor(Math.random()*pics.length)];
+ img.className = "float-pic";
+ img.style.left = Math.random() * (window.innerWidth-60) + "px";
+ img.style.top = Math.random() * (window.innerHeight-60) + "px";
+ img.style.setProperty("--moveX", ((Math.random()-0.5)*400)+"px");
+ img.style.setProperty("--moveY", ((Math.random()-0.5)*400)+"px");
+ img.style.animationDuration = (8+Math.random()*8)+"s";
+ document.body.appendChild(img);
+setTimeout(()=>img.remove(), 10000);
+ }, 600);
+ }
+ function stopPictures(){
+ if(picInterval){ clearInterval(picInterval); picInterval=null; }
+ document.querySelectorAll('.float-pic').forEach(p=>p.remove());
+ }
+ function spawnParticle(text, color){
+ const el = document.createElement('div');
+ el.className = 'particle';
+ el.textContent = text;
+ el.style.left = Math.random() * (window.innerWidth - 40) + 'px';
+ el.style.fontSize = (18 + Math.random()*26) + 'px';
+ el.style.animationDuration = (2 + Math.random()*3) + 's';
+ if(color) el.style.color = color;
+ if(text === 'SORRY'){ el.dataset.kind='sorry'; }
+ else { el.dataset.kind='heart'; }
+ document.body.appendChild(el);
+ setTimeout(()=> el.remove(), 6000);
+ }
+ </script>
+ </body>
+ </html>
