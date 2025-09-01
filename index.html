@@ -26,29 +26,30 @@
  transition:transform .2s ease; margin:10px 8px 0
  }
  button:hover{transform:scale(1.05)}
- /* background particles */
+ /* background particles (SORRY + hearts) */
  .particle{position:fixed;bottom:-40px;pointer-events:none;animation:floatUp linear forwards;z-index:0}
  @keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:.9}100%{transform:translateY(-110vh)
  scale(1.4);opacity:0}}
  section{position:relative;z-index:1}
  /* floating pictures */
- .float-pic {
- position: fixed;
- width: 60px;
- height: 60px;
- pointer-events: none;
- animation: floatPic linear forwards;
- z-index: 0;
+ .float-pic{
+ position:fixed;
+ width:100px; height:100px; /* visible size */
+ pointer-events:none;
+ animation:floatPic linear forwards;
+ z-index:0;
+ will-change:transform, opacity;
+ border-radius:12px; /* look nicer */
  }
- @keyframes floatPic {
- 0% { transform: translate(0,0) rotate(0deg); opacity: 0.9; }
- 100% { transform: translate(var(--moveX), var(--moveY)) rotate(360deg); opacity: 0; }
+ @keyframes floatPic{
+ 0% { transform:translate(0,0) rotate(0deg); opacity:.95; }
+ 100% { transform:translate(var(--moveX), var(--moveY)) rotate(360deg); opacity:0; }
  }
  </style>
  </head>
  <body id="screen">
- <!-- Background music -->
- <audio id="background-audio" src="background_music.mp3" autoplay loop></audio>
+ <!-- Background music audio (autoplay allowed when muted; we unmute on click) -->
+ <audio id="background-audio" src="background_music.mp3" autoplay loop muted></audio>
 <div class="wrap">
  <!-- Page 1 -->
  <section id="page1">
@@ -63,7 +64,7 @@
  <div class="message">How much I love you, you wanna know? </div>
  <button id="next2">Click Here</button>
  </section>
- <!-- Page 3 -->
+ <!-- Page 3 (PINK) -->
  <section id="page3" class="hidden">
  <div class="message" style="color:#111">
  Nisha I love you more than words can ever explain. With you every moment feels like magic.
@@ -99,8 +100,8 @@
  </section>
  <!-- Page 6 -->
  <section id="page6" class="hidden">
- <div class="message">
-I can't edit pictures, I can't make reels like others<br/>
+<div class="message">
+ I can't edit pictures, I can't make reels like others<br/>
  to make you feel special 
 <br/>
  But I have better options to make you more mine ❤ ✨<br/><br/>
@@ -113,7 +114,7 @@ I can't edit pictures, I can't make reels like others<br/>
  <button id="notHappyBtn">Not Happy 
 </div>
  </section>
- <!-- Page 7 -->
+ <!-- Page 7 (Final - PINK) -->
  </button>
  <section id="page7" class="hidden">
  <div class="message" style="color:#111;">
@@ -137,16 +138,23 @@ I can't edit pictures, I can't make reels like others<br/>
  let sorryInterval = null;
  let heartInterval = null;
  let picInterval = null;
+ // Preload pictures to avoid "empty squares"
+ const PIC_SOURCES = ["pic1.png","pic2.png","pic3.png","pic4.png","pic5.png"];
+ const PRELOADED = PIC_SOURCES.map(src => { const i=new Image(); i.src=src; return i; });
  startSorry();
  setTimeout(() => {
  document.getElementById('msg1').classList.remove('hidden');
  document.getElementById('next1').classList.remove('hidden');
  }, 5000);
  document.getElementById('next1').onclick = () => {
+ // Unmute & start music on first user interaction
+ const audio = document.getElementById('background-audio');
+ audio.muted = false;
+ audio.play().catch(()=>{ /* ignore if blocked */ });
  stopSorry();
  setBackground('--red'); showPage(2); startHearts(); startPictures();
  };
- document.getElementById('next2').onclick = () => {
+document.getElementById('next2').onclick = () => {
  setBackground('--pink'); showPage(3); startHearts(); startPictures();
  };
  document.getElementById('next3').onclick = () => {
@@ -156,7 +164,7 @@ I can't edit pictures, I can't make reels like others<br/>
  setBackground('--cream'); showPage(5); startHearts(); startPictures();
  };
  document.getElementById('next5').onclick = () => {
-setBackground('--dark'); showPage(6); startHearts(); stopPictures();
+ setBackground('--dark'); showPage(6); startHearts(); stopPictures(); // stop pics after page5
  };
  document.getElementById('happyBtn').onclick = () => {
  setBackground('--pink'); showPage(7); startHearts(); stopPictures();
@@ -186,31 +194,38 @@ setBackground('--dark'); showPage(6); startHearts(); stopPictures();
  if(sorryInterval){ clearInterval(sorryInterval); sorryInterval=null; }
  document.querySelectorAll('.particle').forEach(p=>{ if(p.dataset.kind==='sorry') p.remove(); });
  }
- // Hearts
+ // Hearts (2x speed flow)
  function startHearts(){
  if(heartInterval) return;
- heartInterval = setInterval(()=>spawnParticle('❤ ', ''), 200);
+ heartInterval = setInterval(()=>spawnParticle('❤ ', ''), 200); // 2x faster spawn
  }
  function stopHearts(){
  if(heartInterval){ clearInterval(heartInterval); heartInterval=null; }
  document.querySelectorAll('.particle').forEach(p=>{ if(p.dataset.kind==='heart') p.remove(); });
  }
- // Floating pictures (Page2 - Page5 only)
+ // Floating pictures (Page2-Page5 only)
  function startPictures(){
  if(picInterval) return;
- const pics = ["pic1.png","pic2.png","pic3.png","pic4.png","pic5.png"];
  picInterval = setInterval(()=>{
+// choose a preloaded image; if it didn't load, skip
+ const choice = PRELOADED[Math.floor(Math.random()*PRELOADED.length)];
+ if(!choice || !choice.complete) return;
  const img = document.createElement('img');
- img.src = pics[Math.floor(Math.random()*pics.length)];
+ img.src = choice.src;
  img.className = "float-pic";
- img.style.left = Math.random() * (window.innerWidth-60) + "px";
- img.style.top = Math.random() * (window.innerHeight-60) + "px";
- img.style.setProperty("--moveX", ((Math.random()-0.5)*400)+"px");
- img.style.setProperty("--moveY", ((Math.random()-0.5)*400)+"px");
- img.style.animationDuration = (8+Math.random()*8)+"s";
+ img.decoding = "async";
+ img.loading = "eager";
+ // random start position
+ img.style.left = Math.max(0, Math.random() * (window.innerWidth - 110)) + "px";
+ img.style.top = Math.max(0, Math.random() * (window.innerHeight - 110)) + "px";
+ // random movement & duration (medium pace)
+ img.style.setProperty("--moveX", ((Math.random()-0.5) * 500) + "px");
+ img.style.setProperty("--moveY", ((Math.random()-0.5) * 500) + "px");
+ img.style.animationDuration = (10 + Math.random()*8) + "s";
+ img.onerror = () => img.remove(); // if any path wrong, don't show broken icon
  document.body.appendChild(img);
-setTimeout(()=>img.remove(), 10000);
- }, 600);
+ setTimeout(()=>img.remove(), 12000);
+ }, 600); // spawn rate
  }
  function stopPictures(){
  if(picInterval){ clearInterval(picInterval); picInterval=null; }
